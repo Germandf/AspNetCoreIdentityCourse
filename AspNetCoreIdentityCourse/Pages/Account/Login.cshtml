@@ -10,7 +10,7 @@
             <div class="col-2">
                 <label asp-for="Credential.UserName"></label>
             </div>
-            <div class="col-5">
+            <div class="col">
                 <input type="text" asp-for="Credential.UserName" class="form-control" />
             </div>
             <span class="text-danger" asp-validation-for="Credential.UserName"></span>
@@ -19,17 +19,25 @@
             <div class="col-2">
                 <label asp-for="Credential.Password"></label>
             </div>
-            <div class="col-5">
+            <div class="col">
                 <input type="password" asp-for="Credential.Password" class="form-control" />
             </div>
             <span class="text-danger" asp-validation-for="Credential.Password"></span>
         </div>
         <div class="input-group row mb-3">
             <div class="col-2">
+                <input type="checkbox" asp-for="Credential.RememberMe" class="form-check-input" />
+                <label class="form-check-label" asp-for="Credential.RememberMe"></label>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        <div class="input-group row mb-3">
+            <div class="col-2">
                 <input type="submit" class="btn btn-primary" value="Login" />
             </div>
-            <div class="col-5">
-                
+            <div class="col">
+
             </div>
         </div>
     </form>
