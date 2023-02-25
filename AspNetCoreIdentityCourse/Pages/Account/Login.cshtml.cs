@@ -21,7 +21,7 @@ public class LoginModel : PageModel
         {
             return Page();
         }
-        
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, "admin"),
