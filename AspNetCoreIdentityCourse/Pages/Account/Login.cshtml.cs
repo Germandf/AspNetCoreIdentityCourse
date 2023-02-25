@@ -29,6 +29,7 @@ public class LoginModel : PageModel
             new Claim("Department", "HR"),
             new Claim("Admin", "true"),
             new Claim("Manager", "true"),
+            new Claim("EmploymentDate", "2022-11-01")
         };
         var identity = new ClaimsIdentity(claims, "MyCookieAuth");
         var claimsPrincipal = new ClaimsPrincipal(identity);

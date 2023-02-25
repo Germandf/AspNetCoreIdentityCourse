@@ -1,3 +1,6 @@
+using AspNetCoreIdentityCourse.Authorization;
+using Microsoft.AspNetCore.Authorization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options =>
@@ -9,16 +12,19 @@ builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", opt
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy =>
-        policy.RequireClaim("Admin"));
+    options.AddPolicy("AdminOnly", policy => policy
+        .RequireClaim("Admin"));
 
-    options.AddPolicy("HRManagerOnly", policy =>
-        policy.RequireClaim("Department", "HR")
-            .RequireClaim("Manager"));
+    options.AddPolicy("MustBelongToHRDepartment", policy => policy
+        .RequireClaim("Department", "HR"));
 
-    options.AddPolicy("MustBelongToHRDepartment", policy => 
-        policy.RequireClaim("Department", "HR"));
+    options.AddPolicy("HRManagerOnly", policy => policy
+        .RequireClaim("Department", "HR")
+        .RequireClaim("Manager")
+        .Requirements.Add(new HRManagerProbationRequirement(3)));
 });
+
+builder.Services.AddSingleton<IAuthorizationHandler, HRManagerProbationRequirementHandler>();
 
 builder.Services.AddRazorPages();
 
