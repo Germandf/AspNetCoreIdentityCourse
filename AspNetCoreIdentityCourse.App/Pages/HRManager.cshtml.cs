@@ -3,6 +3,7 @@ using AspNetCoreIdentityCourse.App.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -24,17 +25,45 @@ public class HRManagerModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var httpClient = _httpClientFactory.CreateClient("OurWebApi");
+        WeatherForecasts = await InvokeEndpoint<List<WeatherForecastDto>>("OurWebApi", "WeatherForecast");
+    }
 
-        var response = await httpClient.PostAsJsonAsync("Auth", 
-            new Credential { UserName = "admin", Password = "password" });
+    private async Task<T> InvokeEndpoint<T>(string clientName, string url)
+    {
+        JwtToken? token = null;
+        var stringTokenObject = HttpContext.Session.GetString("access_token");
+        var httpClient = _httpClientFactory.CreateClient(clientName);
 
-        response.EnsureSuccessStatusCode();
-        var stringJwt = await response.Content.ReadAsStringAsync();
-        var token = JsonSerializer.Deserialize<JwtToken>(stringJwt);
+        if (string.IsNullOrEmpty(stringTokenObject))
+        {
+            token = await Authenticate(token, httpClient);
+        }
+        else
+        {
+            token = JsonSerializer.Deserialize<JwtToken>(stringTokenObject);
+        }
+
+        if (token is null || string.IsNullOrEmpty(token.AccessToken) || token.ExpiresAt <= DateTime.UtcNow)
+        {
+            token = await Authenticate(token, httpClient);
+        }
 
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-        WeatherForecasts = await httpClient.GetFromJsonAsync<List<WeatherForecastDto>>("WeatherForecast");
+        return await httpClient.GetFromJsonAsync<T>(url);
+    }
+
+    private async Task<JwtToken> Authenticate(JwtToken? token, HttpClient httpClient)
+    {
+        var response = await httpClient.PostAsJsonAsync("Auth",
+                        new Credential { UserName = "admin", Password = "password" });
+
+        response.EnsureSuccessStatusCode();
+        var stringJwt = await response.Content.ReadAsStringAsync();
+        token = JsonSerializer.Deserialize<JwtToken>(stringJwt);
+
+        HttpContext.Session.SetString("access_token", stringJwt);
+
+        return token!;
     }
 }
