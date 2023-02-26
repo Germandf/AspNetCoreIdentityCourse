@@ -3,6 +3,28 @@
 @{
 }
 
-<div class="text-center">
-    <h1 class="display-4">HR Manager</h1>
+<div>
+    <h1>HR Manager</h1>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Date</td>
+                <td>Temp C</td>
+                <td>Temp F</td>
+                <td>Summary</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var weatherForecast in Model.WeatherForecasts)
+            {
+                <tr>
+                    <td>@weatherForecast.Date</td>
+                    <td>@weatherForecast.TemperatureC</td>
+                    <td>@weatherForecast.TemperatureF</td>
+                    <td>@weatherForecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

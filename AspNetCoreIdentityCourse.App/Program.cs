@@ -29,6 +29,11 @@ builder.Services.AddSingleton<IAuthorizationHandler, HRManagerProbationRequireme
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddHttpClient("OurWebApi", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7159/");
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
