@@ -41,7 +41,7 @@ public class RegisterModel : PageModel
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(error.Code, error.Description);
+                ModelState.AddModelError("Register", error.Description);
             }
 
             return Page();
