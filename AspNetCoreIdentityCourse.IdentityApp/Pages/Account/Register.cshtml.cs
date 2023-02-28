@@ -35,7 +35,8 @@ public class RegisterModel : PageModel
 
         if (result.Succeeded)
         {
-            return RedirectToPage("/Account/Login");
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token })!);
         }
         else
         {

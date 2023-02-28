@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreIdentityCourse.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreIdentityCourse.Api", "AspNetCoreIdentityCourse.Api\AspNetCoreIdentityCourse.Api.csproj", "{84A305D5-13FA-4B80-BE89-79AA5246EF37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreIdentityCourse.IdentityApp", "AspNetCoreIdentityCourse.IdentityApp\AspNetCoreIdentityCourse.IdentityApp.csproj", "{4C683F9B-18D9-4EC8-B826-6797372CD081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreIdentityCourse.IdentityApp", "AspNetCoreIdentityCourse.IdentityApp\AspNetCoreIdentityCourse.IdentityApp.csproj", "{4C683F9B-18D9-4EC8-B826-6797372CD081}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
