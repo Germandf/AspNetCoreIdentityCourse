@@ -1,7 +1,7 @@
 ﻿@if (User.Identity?.IsAuthenticated ?? false)
 {
     <form method="post" class="form-inline" asp-page="/Account/Logout">
-        Welcome @User.Identity.Name
+        Welcome @User.Identity.Name (@User.Claims.FirstOrDefault(x => x.Type == "Alias"))
         <button type="submit" class="m-lg-2 btn btn-link">Logout</button>
     </form>
 }

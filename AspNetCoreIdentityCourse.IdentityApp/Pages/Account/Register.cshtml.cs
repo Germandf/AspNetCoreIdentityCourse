@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace AspNetCoreIdentityCourse.IdentityApp.Pages.Account;
 
@@ -37,10 +38,14 @@ public class RegisterModel : PageModel
             Position = RegisterVm.Position,
         };
 
+        var aliasClaim = new Claim("Alias", RegisterVm.Alias);
+
         var result = await _userManager.CreateAsync(user, RegisterVm.Password);
 
         if (result.Succeeded)
         {
+            await _userManager.AddClaimAsync(user, aliasClaim);
+
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var link = Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token });
             
@@ -77,4 +82,7 @@ public class RegisterVm
 
     [Required]
     public string Position { get; set; } = "";
+
+    [Required]
+    public string Alias { get; set; } = "";
 }
