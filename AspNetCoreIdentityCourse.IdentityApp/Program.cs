@@ -1,4 +1,5 @@
 using AspNetCoreIdentityCourse.IdentityApp.Data;
+using AspNetCoreIdentityCourse.IdentityApp.Data.Account;
 using AspNetCoreIdentityCourse.IdentityApp.Services;
 using AspNetCoreIdentityCourse.IdentityApp.Settings;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    .AddIdentity<User, IdentityRole>(options =>
     {
         options.Password.RequiredLength = 8;
         options.Password.RequireLowercase = true;

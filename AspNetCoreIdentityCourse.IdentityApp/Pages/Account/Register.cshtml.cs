@@ -1,3 +1,4 @@
+using AspNetCoreIdentityCourse.IdentityApp.Data.Account;
 using AspNetCoreIdentityCourse.IdentityApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,14 +9,12 @@ namespace AspNetCoreIdentityCourse.IdentityApp.Pages.Account;
 
 public class RegisterModel : PageModel
 {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly ILogger<RegisterModel> _logger;
+    private readonly UserManager<User> _userManager;
     private readonly IEmailService _emailService;
 
-    public RegisterModel(UserManager<IdentityUser> userManager, ILogger<RegisterModel> logger, IEmailService emailService)
+    public RegisterModel(UserManager<User> userManager, IEmailService emailService)
     {
         _userManager = userManager;
-        _logger = logger;
         _emailService = emailService;
     }
 
@@ -30,10 +29,12 @@ public class RegisterModel : PageModel
     {
         if (!ModelState.IsValid) return Page();
 
-        var user = new IdentityUser
+        var user = new User
         {
             Email = RegisterVm.Email,
             UserName = RegisterVm.Email,
+            Department = RegisterVm.Department,
+            Position = RegisterVm.Position,
         };
 
         var result = await _userManager.CreateAsync(user, RegisterVm.Password);
@@ -70,4 +71,10 @@ public class RegisterVm
     [Required]
     [DataType(DataType.Password)]
     public string Password { get; set; } = "";
+
+    [Required]
+    public string Department { get; set; } = "";
+
+    [Required]
+    public string Position { get; set; } = "";
 }

@@ -30,6 +30,24 @@
         </div>
         <div class="input-group row mb-3">
             <div class="col-2">
+                <label asp-for="RegisterVm.Department"></label>
+            </div>
+            <div class="col">
+                <input type="text" asp-for="RegisterVm.Department" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="RegisterVm.Department"></span>
+        </div>
+        <div class="input-group row mb-3">
+            <div class="col-2">
+                <label asp-for="RegisterVm.Position"></label>
+            </div>
+            <div class="col">
+                <input type="text" asp-for="RegisterVm.Position" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="RegisterVm.Position"></span>
+        </div>
+        <div class="input-group row mb-3">
+            <div class="col-2">
                 <input type="submit" class="btn btn-primary" value="Register" />
             </div>
             <div class="col">
