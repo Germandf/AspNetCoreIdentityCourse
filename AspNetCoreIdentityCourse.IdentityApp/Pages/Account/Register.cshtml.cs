@@ -1,3 +1,4 @@
+using AspNetCoreIdentityCourse.IdentityApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,10 +9,14 @@ namespace AspNetCoreIdentityCourse.IdentityApp.Pages.Account;
 public class RegisterModel : PageModel
 {
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly ILogger<RegisterModel> _logger;
+    private readonly IEmailService _emailService;
 
-    public RegisterModel(UserManager<IdentityUser> userManager)
+    public RegisterModel(UserManager<IdentityUser> userManager, ILogger<RegisterModel> logger, IEmailService emailService)
     {
         _userManager = userManager;
+        _logger = logger;
+        _emailService = emailService;
     }
 
     [BindProperty]
@@ -36,7 +41,13 @@ public class RegisterModel : PageModel
         if (result.Succeeded)
         {
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            return Redirect(Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token })!);
+            var link = Url.PageLink(pageName: "/Account/ConfirmEmail", values: new { userId = user.Id, token });
+            
+            await _emailService.SendAsync("noreply@identityapp.com", user.Email, 
+                "Please confirm your email", 
+                $"Please click on this link to confirm your email address: {link}");
+
+            return RedirectToPage("/Account/Login");
         }
         else
         {
