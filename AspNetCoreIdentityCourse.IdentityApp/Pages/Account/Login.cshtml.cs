@@ -40,7 +40,7 @@ public class LoginModel : PageModel
         {
             if (result.RequiresTwoFactor)
             {
-                return RedirectToPage("/Account/LoginTwoFactor", new { Email = Credential.Email, RememberMe = Credential.RememberMe });
+                return RedirectToPage("/Account/LoginTwoFactorWithAuthenticator", new { RememberMe = Credential.RememberMe });
             }
             else if (result.IsLockedOut)
             {
