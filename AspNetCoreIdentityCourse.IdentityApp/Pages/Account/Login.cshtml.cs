@@ -1,4 +1,5 @@
 using AspNetCoreIdentityCourse.IdentityApp.Data.Account;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,8 +19,12 @@ public class LoginModel : PageModel
     [BindProperty]
     public CredentialVm Credential { get; set; } = new();
 
-    public void OnGet()
+    [BindProperty]
+    public IEnumerable<AuthenticationScheme> ExternalLoginProviders { get; set; } = new List<AuthenticationScheme>();
+
+    public async Task OnGetAsync()
     {
+        ExternalLoginProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -53,6 +58,14 @@ public class LoginModel : PageModel
 
             return Page();
         }
+    }
+
+    public IActionResult OnPostLoginExternally(string provider)
+    {
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, null);
+        properties.RedirectUri = Url.Action("ExternalLoginCallback", "Account");
+
+        return Challenge(properties, provider);
     }
 }
 
